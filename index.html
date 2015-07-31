@@ -1,11 +1,31 @@
 <html>
 <head>
 <script src="js/d3.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/jquery.mouseweel.js"></script>
 <script type="text/javascript" src="js/main_graph.js"></script>
 <link href="css/main.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <div id="chart">
+</div>
+<div id="popup">
+    <div>
+	    <span class="section">
+	        <h1 id="tweets">0</h1>
+	        <span>tweets</span>
+	    </span>
+	    <span class="section">
+	        <h1 id="replies">0</h1>
+	        <span>replies</span>
+	    </span>
+	    <span class="section">
+	        <h1 id="mentions">0</h1>
+	        <span>mentions</span>
+	    </span>
+    </div>
+    <div class="screen_name">screen name: <b id="popup_user_name"></b></div>
+    <div class="micro">(click node for more info)</div>
 </div>
 </body>
 </html>

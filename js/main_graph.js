@@ -6,24 +6,68 @@ function parse_csv(data) {
 
 function display_graph(rows) {
     //Date,Screen Name,Full Name,Followers,Follows,Retweets,Favorites,Tweet Text,"Longitude, Latitude",Street Address,Google Maps,Tweet URL,Profile Image
-    var COMUMN_SCREEN_NAME = 1;
+    var COLUMN_SCREEN_NAME = 1,
+    	COLUMN_TWEET_TEXT = 7,
+    	COLUMN_PROFILE_IMAGE = 13
 
     var links = [];
     var nodes = [];
     
     rows.forEach(function(row) {
-        nodes[row[COMUMN_SCREEN_NAME]] = {name: row[COMUMN_SCREEN_NAME]};
+    	var name = row[COLUMN_SCREEN_NAME],
+    		tweet = row[COLUMN_TWEET_TEXT];
+    	if (name in nodes)
+    		nodes[name].tweets.push({tweet: tweet});
+    	else
+	        nodes[name] = {
+	        		name: name,
+	        		tweets: [{tweet: tweet}],
+	        		replies: [],
+	        		mentions: [],
+	        		image: row[COLUMN_PROFILE_IMAGE] 
+	        	};
+    });
+    //setup replies and mentions
+    rows.forEach(function(row) {
+    	var name = row[COLUMN_SCREEN_NAME],
+    		tweet = row[COLUMN_TWEET_TEXT];
+    	
+    	if (!tweet) {
+    		console.log('Invalid data:', row)
+    		return;
+    	}
+    	
+    	var reply_match = tweet.match(/^@\w+/);
+    	if (reply_match) {
+    		var reply_name = reply_match[0];
+    		if (reply_name in nodes) {
+	    		nodes[name].replies.push({tweet: tweet, reply_to: reply_name})
+	    		links.push({source: nodes[name], target: nodes[reply_name]});
+    		}
+    		tweet = tweet.substring(reply_name.length);
+    	}
+    	
+    	var mention_matches = tweet.match(/@\w+/);
+    	if (mention_matches)
+	    	mention_matches.forEach(function(mention_name) {
+	    		if (mention_name in nodes) {
+	    			nodes[name].mentions.push({tweet: tweet, mention_to: mention_name})
+	    			links.push({source: nodes[name], target: nodes[mention_name]});
+	    		}
+	    	})
     });
 
     var w = parseInt(d3.select('body').style('width')),//1280,
         h = parseInt(d3.select('body').style('height'));//800;
     
+    var linkDistance = 80;
+    
     var force = d3.layout.force()
         .nodes(d3.values(nodes))
         .links(links)
         .size([w, h])
-        .linkDistance(80)
-        .charge(-500)
+        .linkDistance(linkDistance)
+        .charge(-100)
         .on('tick', tick)
         .start();
 	
@@ -94,4 +138,54 @@ function display_graph(rows) {
         return "translate(" + d.x + "," + d.y + ")";
       });
     }
+    
+    
+    /*** graph scrolling ***/
+    
+	$("body").mousewheel(function(i,intDelta){
+		if (intDelta > 0 ) gravityUp();
+		if (intDelta < 0 ) gravityDown();
+	});
+	
+	function gravityUp()
+	{
+		var value = force.gravity()+0.01;
+		linkDistance = linkDistance-5;
+		if(value > 1) value = 1;
+		force.gravity(value);
+		if (linkDistance >40) force.linkDistance(linkDistance);
+		force.start();
+	}
+
+	function gravityDown()
+	{
+		var value = force.gravity()-0.01;
+		linkDistance = linkDistance+5;
+		if(value < 0) value = 0;
+		force.linkDistance(linkDistance);
+		force.gravity(value);
+		force.start();
+	}
+	
+	setup_popup(circle);
 }
+
+function setup_popup(circle) {
+	circle.on('mouseover', function(d){
+    	d3.select('#popup').style('visibility', 'visible');
+	});
+    circle.on('mousemove', function(d){
+    	console.log(d);
+    	d3.select('#popup')
+    		.style('display', 'block')
+    		.style('left', d3.event.pageX+10)
+    		.style('top', d3.event.pageY-20)
+    		.select('#popup_user_name')
+    			.text(d.name);
+	});
+    circle.on('mouseout', function(d){
+    	d3.select('#popup').style('visibility', 'hidden');
+	});
+} 
+
+

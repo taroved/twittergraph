@@ -28,3 +28,36 @@ text.shadow {
   stroke: #fff;
   stroke-width: 4px;
 }
+
+
+/*** popup ***/
+#popup {
+  position:fixed;
+  border: 1px solid black;
+  background: white;
+  color: gray;
+  opacity: 0.95;
+  text-align: center;
+  color: #5A5A5A;
+}
+#popup .section {
+	display: inline-block;
+	min-width: 70px;
+	margin-bottom: 10px;
+}
+#popup .section h1 {
+    color: #11710B;
+    font-size: 3em;
+    margin-top: 0.1em;
+    margin-bottom: 0.05em;
+}
+#popup_user_name {
+	color: black;
+}
+#popup .micro {
+	font-size: 15px;
+	margin-top: 10px;
+}
+#popup .screen_name {
+    padding: 0 7px;
+}

@@ -4,6 +4,11 @@ body {
   height: 100%;
 }
 
+.navbar {
+  opacity: 0.95;	
+}
+
+/*** graph ***/
 rect {
   fill: none;
   pointer-events: all;
@@ -32,6 +37,7 @@ text.shadow {
 
 /*** popup ***/
 #popup {
+  visibility: hidden;
   position:fixed;
   border: 1px solid black;
   background: white;
@@ -61,3 +67,36 @@ text.shadow {
 #popup .screen_name {
     padding: 0 7px;
 }
+
+
+/*** summary dialog ***/
+#summary_dialog.modal {
+    top: 60px;
+    right: 10px;
+    bottom: 0;
+    left: auto;
+}
+#summary_dialog > .modal-dialog {
+	margin:0;
+	width: 375px;
+}
+
+#summary_dialog .scores {
+	text-align: center;
+}
+#summary_dialog .section {
+    display: inline-block;
+    min-width: 150px;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+}
+#summary_dialog .section h1 {
+    color: #11710B;
+    font-size: 3em;
+    margin-top: 0.1em;
+    margin-bottom: 0.05em;
+}
+#summary_dialog .modal-header .btn-primary {
+	width: 100%;
+}
+

@@ -1,31 +1,100 @@
 <html>
 <head>
-<script src="js/d3.js" charset="utf-8"></script>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Twitter Graph Visualizer">
+<meta name="author" content="">
+<link rel="icon" href="favicon.ico">
+<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<link href="css/bootstrap-theme.min.css" type="text/css" rel="stylesheet" />
+<link href="css/main.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="js/d3.js" charset="utf-8"></script>
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="js/jquery.mouseweel.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/main_graph.js"></script>
-<link href="css/main.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <span class="navbar-brand">Twitter Graph Visualizer</span>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <!-- li class="active"><a href="#">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li-->
+      </ul>
+    </div><!--/.nav-collapse -->
+ </div>
+</nav>
 <div id="chart">
 </div>
 <div id="popup">
     <div>
 	    <span class="section">
-	        <h1 id="tweets">0</h1>
+	        <h1 id="popup_tweets">0</h1>
 	        <span>tweets</span>
 	    </span>
 	    <span class="section">
-	        <h1 id="replies">0</h1>
+	        <h1 id="popup_replies">0</h1>
 	        <span>replies</span>
 	    </span>
 	    <span class="section">
-	        <h1 id="mentions">0</h1>
+	        <h1 id="popup_mentions">0</h1>
 	        <span>mentions</span>
 	    </span>
     </div>
     <div class="screen_name">screen name: <b id="popup_user_name"></b></div>
     <div class="micro">(click node for more info)</div>
+</div>
+
+<!-- Modal -->
+<div  id="summary_dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Summary - <span id="summary_name"></span></h4>
+	    <div class="scores">
+            <span class="section">
+                <h1 id="summary_connections">0</h1>
+                <span>connections</span>
+            </span>
+	        <span class="section">
+	            <h1 id="summary_tweets">0</h1>
+	            <span>tweets</span>
+	        </span>
+	    </div>
+	    <button id="replay_tweets" type="button" class="btn btn-primary">Replay Tweets</button>
+      </div>
+      <div class="modal-body">
+		  <ul class="nav nav-tabs" role="tablist">
+		    <li role="presentation" class="active"><a href="#summary_tweets_tab" aria-controls="summary_tweets_tab" role="tab" data-toggle="tab">Tweets (<span id="summary_tweets_cnt"></span>)</a></li>
+		    <li role="presentation"><a href="#summary_replies_tab" aria-controls="summary_replies_tab" role="tab" data-toggle="tab">@Replies (<span id="summary_replies_cnt"></span>)</a></li>
+		    <li role="presentation"><a href="#summary_mentions_tab" aria-controls="summary_mentions_tab" role="tab" data-toggle="tab">@Mentions (<span id="summary_mentions_cnt"></span>)</a></li>
+		  </ul>
+		  <!-- Tab panes -->
+		  <div class="tab-content">
+		    <div role="tabpanel" class="tab-pane active" id="summary_tweets_tab">summary_tweets_tab</div>
+		    <div role="tabpanel" class="tab-pane" id="summary_replies_tab">summary_replies_tab</div>
+		    <div role="tabpanel" class="tab-pane" id=""summary_mentions_tab"">"summary_mentions_tab"</div>
+		  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 d3.xhr("may2015.csv", "text/csv", parse_csv);
 
 function parse_csv(data) {
-    display_graph(d3.csv.parseRows(data.response).slice(0, 1000));
+    display_graph(d3.csv.parseRows(data.response).slice(0, 100));
 }
 
 function display_graph(rows) {
@@ -40,20 +40,43 @@ function display_graph(rows) {
     	var reply_match = tweet.match(/^@\w+/);
     	if (reply_match) {
     		var reply_name = reply_match[0];
-    		if (reply_name in nodes) {
-	    		nodes[name].replies.push({tweet: tweet, reply_to: reply_name})
-	    		links.push({source: nodes[name], target: nodes[reply_name]});
-    		}
+			var node = null;
+			if (reply_name in nodes) {
+				node = nodes[reply_name];
+			}
+			else {
+				node = nodes[reply_name] = {
+		        		name: reply_name,
+		        		tweets: [],
+		        		replies: [],
+		        		mentions: [],
+		        		image: null 
+		        	};
+			}
+    		node.replies.push({tweet: tweet, reply_from: name})
+    		links.push({source: nodes[reply_name], target: nodes[name]});
+
     		tweet = tweet.substring(reply_name.length);
     	}
     	
     	var mention_matches = tweet.match(/@\w+/);
     	if (mention_matches)
 	    	mention_matches.forEach(function(mention_name) {
-	    		if (mention_name in nodes) {
-	    			nodes[name].mentions.push({tweet: tweet, mention_to: mention_name})
-	    			links.push({source: nodes[name], target: nodes[mention_name]});
-	    		}
+				var node = null;
+				if (mention_name in nodes) {
+					node = nodes[mention_name];
+				}
+				else {
+					node = nodes[mention_name] = {
+			        		name: mention_name,
+			        		tweets: [],
+			        		replies: [],
+			        		mentions: [],
+			        		image: null 
+			        	};
+				}
+    			nodes[name].mentions.push({tweet: tweet, mention_from: mention_name})
+    			links.push({source: nodes[mention_name], target: nodes[name]});
 	    	})
     });
 
@@ -168,6 +191,7 @@ function display_graph(rows) {
 	}
 	
 	setup_popup(circle);
+	setup_lists_dialog(circle, links);
 }
 
 function setup_popup(circle) {
@@ -175,17 +199,41 @@ function setup_popup(circle) {
     	d3.select('#popup').style('visibility', 'visible');
 	});
     circle.on('mousemove', function(d){
-    	console.log(d);
     	d3.select('#popup')
-    		.style('display', 'block')
     		.style('left', d3.event.pageX+10)
-    		.style('top', d3.event.pageY-20)
-    		.select('#popup_user_name')
-    			.text(d.name);
+    		.style('top', d3.event.pageY-20);
+    	
+    	d3.select('#popup_tweets')
+			.text(d.tweets.length);
+    	d3.select('#popup_replies')
+    		.text(d.replies.length);
+    	d3.select('#popup_mentions')
+			.text(d.mentions.length);
+    	d3.select('#popup_user_name')
+    		.text(d.name);
 	});
     circle.on('mouseout', function(d){
     	d3.select('#popup').style('visibility', 'hidden');
 	});
 } 
 
+function setup_lists_dialog(circle, links) {
+	circle.on('click', function(d){
+		d3.select("#summary_name")
+			.text(d.name);
+		d3.select("#summary_connections")
+			.text(links.filter(function(l) {return l.source == d || l.target == d;}).length);
+		d3.select("#summary_tweets")
+			.text(d.tweets.length);
+		
+		d3.select("#summary_tweets_cnt")
+			.text(d.tweets.length);
+		d3.select("#summary_replies_cnt")
+			.text(d.replies.length);
+		d3.select("#summary_mentions_cnt")
+			.text(d.mentions.length);
+		
+		$('#summary_dialog').modal();
+	})
+}
 

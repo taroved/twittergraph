@@ -103,3 +103,9 @@ text.shadow {
 #summary_dialog .twitter {
 	margin-top: 10px;
 }
+
+
+
+#playback_dialog .modal-lg {
+	width: 90%;
+}

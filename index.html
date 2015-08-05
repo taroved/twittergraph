@@ -15,6 +15,7 @@
 <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="js/jquery.mouseweel.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/playback.js"></script>
 <script type="text/javascript" src="js/main_graph.js"></script>
 </head>
 <body>
@@ -59,7 +60,7 @@
     <div class="micro">(click node for more info)</div>
 </div>
 
-<!-- Modal -->
+<!-- Summary dialog -->
 <div  id="summary_dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -90,6 +91,33 @@
 		    <div role="tabpanel" class="tab-pane" id="summary_replies_tab"></div>
 		    <div role="tabpanel" class="tab-pane" id="summary_mentions_tab"></div>
 		  </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Playback dialog -->
+<div  id="playback_dialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Conversation Playback - <span id="playback_name"></span></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-8">
+                <div id="playback_graph"></div>
+                <div id="playback_diagram"></div>
+                <div id="playback_progressbar"></div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default">
+				  <div class="panel-body">
+				    456
+				  </div>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
   </div>

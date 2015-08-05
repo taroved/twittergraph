@@ -1,28 +1,21 @@
 d3.xhr("may2015.csv", "text/csv", parse_csv);
 
+//Date,Screen Name,Full Name,Followers,Follows,Retweets,Favorites,Tweet Text,"Longitude, Latitude",Street Address,Google Maps,Tweet URL,Profile Image
+var COLUMN_DATE = 0,
+	COLUMN_SCREEN_NAME = 1,
+	COLUMN_TWEET_TEXT = 7,
+	COLUMN_TWEET_URL = 11,
+	COLUMN_PROFILE_IMAGE = 12
+
 function parse_csv(data) {
     display_graph(d3.csv.parseRows(data.response).slice(0, 1000));
 }
 
-function display_graph(rows) {
-    //Date,Screen Name,Full Name,Followers,Follows,Retweets,Favorites,Tweet Text,"Longitude, Latitude",Street Address,Google Maps,Tweet URL,Profile Image
-    var COLUMN_DATE = 0,
-    	COLUMN_SCREEN_NAME = 1,
-    	COLUMN_TWEET_TEXT = 7,
-    	COLUMN_TWEET_URL = 11,
-    	COLUMN_PROFILE_IMAGE = 12
-
+//create_node - create nodes if not exists
+function get_nodes_links_from_rows(rows, create_node) {
     var links = [];
     var nodes = [];
-    
-    var rows = rows.filter(function(row) { 
-    	if (row.length != COLUMN_PROFILE_IMAGE + 1) {
-    		//console.log('Invalid data:', '(length :'+row.length+')', row)
-    		return false;
-    	}
-    	return true;
-    });
-    
+
     rows.forEach(function(row) {
     	var name = row[COLUMN_SCREEN_NAME],
     		tweet = row[COLUMN_TWEET_TEXT];
@@ -50,10 +43,8 @@ function display_graph(rows) {
     	var reply_match = tweet.match(/^@\w+/);
     	if (reply_match) {
     		var reply_name = reply_match[0];
-			var node = null;
 			if (reply_name in nodes) {
-				node = nodes[reply_name];
-	    		node.replies.push({
+				nodes[reply_name].replies.push({
 		        		id: row[COLUMN_TWEET_URL].match(/\d+$/)[0],
 		    			date: row[COLUMN_DATE],
 		    			name: row[COLUMN_SCREEN_NAME],
@@ -61,17 +52,18 @@ function display_graph(rows) {
 		    			image: row[COLUMN_PROFILE_IMAGE],
 		    			reply_from: name
 	    			})
-	    		links.push({source: nodes[reply_name], target: nodes[name]});
+	    		links.push({source: nodes[name], target: nodes[reply_name]});
 			}
-			/*else {
-				node = nodes[reply_name] = {
+			else if (create_node) {
+				nodes[reply_name] = {
 		        		name: reply_name,
 		        		tweets: [],
 		        		replies: [],
 		        		mentions: [],
 		        		image: null 
 		        	};
-			}*/
+				links.push({source: nodes[name], target: nodes[reply_name]});
+			}
 
     		tweet = tweet.substring(reply_name.length);
     	}
@@ -79,10 +71,8 @@ function display_graph(rows) {
     	var mention_matches = tweet.match(/@\w+/);
     	if (mention_matches)
 	    	mention_matches.forEach(function(mention_name) {
-				var node = null;
 				if (mention_name in nodes) {
-					node = nodes[mention_name];
-	    			nodes[name].mentions.push({
+	    			nodes[mention_name].mentions.push({
 		    	    		id: row[COLUMN_TWEET_URL].match(/\d+$/)[0],
 		    				date: row[COLUMN_DATE],
 		    				name: row[COLUMN_SCREEN_NAME],
@@ -90,19 +80,37 @@ function display_graph(rows) {
 		    				image: row[COLUMN_PROFILE_IMAGE],
 		    				mention_from: mention_name
 	    				})
-	    			links.push({source: nodes[mention_name], target: nodes[name]});
+	    			links.push({source: nodes[name], target: nodes[mention_name]});
 				}
-				/*else {
-					node = nodes[mention_name] = {
+				else if (create_node) {
+					nodes[mention_name] = {
 			        		name: mention_name,
 			        		tweets: [],
 			        		replies: [],
 			        		mentions: [],
 			        		image: null 
 			        	};
-				}*/
+					links.push({source: nodes[name], target: nodes[mention_name]});
+				}
 	    	})
     });
+    
+    return [nodes, links];
+}
+
+function display_graph(rows) {
+    
+    var rows = rows.filter(function(row) { 
+    	if (row.length != COLUMN_PROFILE_IMAGE + 1) {
+    		//console.log('Invalid data:', '(length :'+row.length+')', row)
+    		return false;
+    	}
+    	return true;
+    });
+    
+    var v = get_nodes_links_from_rows(rows, false),
+    	nodes = v[0],
+    	links = v[1];
 
     var w = parseInt(d3.select('body').style('width')),//1280,
         h = parseInt(d3.select('body').style('height'));//800;
@@ -215,7 +223,7 @@ function display_graph(rows) {
 	}
 	
 	setup_popup(circle);
-	setup_lists_dialog(circle, links);
+	setup_lists_dialog(circle, links, rows);
 }
 
 function setup_popup(circle) {
@@ -251,7 +259,7 @@ String.format = function() {
   return s;
 }
 
-function setup_lists_dialog(circle, links) {
+function setup_lists_dialog(circle, links, rows) {
 	circle.on('click', function(d){
 		d3.select("#summary_name")
 			.text(d.name);
@@ -296,7 +304,9 @@ function setup_lists_dialog(circle, links) {
 		}
 		
 		$('#summary_dialog').modal();
-	})
+		
+		setup_playback_dialog(d, rows);
+	});
 }
 
 ////maisonbisson.com/blog/post/12150/detecting-broken-images-in-javascript/

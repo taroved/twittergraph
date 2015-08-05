@@ -1,0 +1,167 @@
+.twitter
+{
+}
+.twitter p
+{
+    background: #fff;
+    color: #000;
+    font-size: 12px;
+    line-height: 16px;
+    margin: 0;
+    min-height: 48px;
+    moz-border-radius: 5px;
+    padding-bottom: 20px;
+    webkit-border-radius: 5px;
+}
+.twitter .tweet_content
+{
+    background: #fff;
+    color: #000;
+    font-size: 18px !important;
+    line-height: 22px;
+    margin: 0;
+    min-height: 48px;
+    moz-border-radius: 5px;
+    padding: 10px 12px 10px 12px;
+    webkit-border-radius: 5px;
+}
+.twitter p span.metadata
+{
+    clear: both;
+    display: block;
+    height: 40px;
+    margin-top: 0px;
+    padding-bottom: 12px;
+    width: 100%;
+}
+.twitter p span.metadata span.author
+{
+    color: #999;
+    font-size: 14px;
+    line-height: 15px;
+}
+.twitter p span.metadata span.author a
+{
+    font-size: 15px;
+    line-height: 15px;
+    vertical-align: middle;
+}
+.twitter p span.metadata span.author img
+{
+    float: left;
+    height: 48px;
+    margin: 0 10px 0px 0px;
+    width: 48px;
+}
+.table p span.metadata span.author img
+{
+    margin-bottom: 20px;
+}
+.twitter p a
+{
+    color:#005689;
+    text-decoration: none;
+}
+.twitter p a:hover
+{
+    text-decoration: underline;
+}
+.twitter .timestamp
+{
+    clear:left;
+    display: inline-block;
+    font-size: 10px;
+    margin-bottom: 5px;
+}
+.twitter .components-above span.timestamp
+{
+    font-size: 10px;
+    line-height: 12px;
+    margin-top: 1px;
+}
+.twitter a
+{
+    
+    text-decoration: none;
+}
+.twitter a:hover
+{
+    text-decoration: underline;
+}
+.twitter .tweet-screen-name
+{
+    font-size: 14px;
+    font-weight: bold;
+}
+.twitter .tweet-full-name
+{
+    color: #999;
+    font-size: 12px;
+    padding-left: 4px;
+}
+.twitter .tweet-actions
+{
+    display: inline-block;
+    font-size: 11px;
+    width: 300px;
+}
+.twitter .components-above span.tweet-actions
+{
+    font-size: 10px;
+}
+.twitter .controls
+{
+    line-height: 12px!important;
+}
+.twitter .tweet-actions a
+{
+    margin-left: 5px;
+}
+.twitter .tweet-actions a b
+{
+    font-weight: normal;
+}
+.twitter .components-above span.tweet-actions a b
+{
+    line-height: 12px;
+    vertical-align: baseline;
+}
+.twitter .components-above .tweet-text
+{
+    font-size: 13px;
+    vertical-align: baseline;
+}
+.twitter .tweet-image
+{
+    float: left;
+    width: 40px;
+}
+
+.twitter .tweet-actions i
+{
+    background: transparent url(../img/sprite-icons.png) no-repeat;
+    display: inline-block;
+    height: 15px;
+    margin: 0 4px -3px 3px;
+    outline: none;
+    position: relative;
+    text-indent: -99999px;
+    vertical-align: baseline;
+    width: 15px;
+}
+.twitter .tweet-actions a.retweet-action i
+{
+    background-position: -192px 0;
+}
+.twitter .tweet-actions a.reply-action i
+{
+    background-position: 0 0;
+}
+.twitter .tweet-actions a.favorite-action i
+{
+    background-position: -32px 0;
+}
+
+#twitter_tpl {
+	display: none;
+}

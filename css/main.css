@@ -73,7 +73,7 @@ text.shadow {
 #summary_dialog.modal {
     top: 60px;
     right: 10px;
-    bottom: 0;
+    bottom: auto;
     left: auto;
 }
 #summary_dialog > .modal-dialog {
@@ -100,3 +100,6 @@ text.shadow {
 	width: 100%;
 }
 
+#summary_dialog .twitter {
+	margin-top: 10px;
+}

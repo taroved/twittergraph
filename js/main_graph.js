@@ -112,8 +112,8 @@ function display_graph(rows) {
     	nodes = v[0],
     	links = v[1];
 
-    var w = parseInt(d3.select('body').style('width')),//1280,
-        h = parseInt(d3.select('body').style('height'));//800;
+    var w = parseInt(d3.select('body').style('width')),
+        h = parseInt(d3.select('body').style('height'));
     
     var linkDistance = 80;
     

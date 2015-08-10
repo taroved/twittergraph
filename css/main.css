@@ -132,7 +132,34 @@ text.shadow {
 }
 
 
-
+/*** playback dialog ***/
 #playback_dialog .modal-lg {
 	width: 90%;
+}
+
+/*** analytics dialog ***/
+#analytics_dialog.modal {
+    top: 60px;
+    right: auto;
+    bottom: 20px;
+    left: 10px;
+}
+#analytics_dialog > .modal-dialog {
+    margin:0;
+    width: 500px;
+}
+
+#analytics_dialog .chart rect {
+  fill: steelblue;
+}
+
+#analytics_dialog .chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+#analytics_dialog .chart text.title {
+  fill: black;
+  font: 10px sans-serif;
+  text-anchor: inherit;
 }

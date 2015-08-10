@@ -224,6 +224,7 @@ function display_graph(rows) {
 	
 	setup_popup(circle);
 	setup_lists_dialog(circle, links, rows);
+	setup_analytics(rows);
 }
 
 function setup_popup(circle) {

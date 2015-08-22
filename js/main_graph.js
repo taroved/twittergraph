@@ -231,6 +231,7 @@ function display_graph(rows) {
 	setup_popup(circle);
 	setup_lists_dialog(circle, links, rows);
 	setup_analytics(rows);
+	setup_archive(rows);
 }
 
 //Setup display of popup for every node in the main graph
@@ -319,12 +320,11 @@ function setup_lists_dialog(circle, links, rows) {
 	});
 }
 
-//Fix for images. But it doesn't work and I disabled it so far.
+//Fix for images. Disabled now because it blocks all images. But why?
 ////maisonbisson.com/blog/post/12150/detecting-broken-images-in-javascript/
 function iErr(source){
-	//source.src = "/img/noavatar.jpg";
+//	source.src = "/img/noavatar.jpg";
 	
 	source.onerror = "";
 	return true;
 }
-

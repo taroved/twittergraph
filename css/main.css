@@ -163,3 +163,10 @@ text.shadow {
   font: 10px sans-serif;
   text-anchor: inherit;
 }
+
+/*** archive dialog ***/
+#archive_dialog .page-container {
+	height: 70%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}

@@ -1,7 +1,31 @@
+//Show dialog with hashtags statistics (already rendered)
 function show_top_hashtags_dialog() {
 	$('#analytics_dialog').modal();
 }
 
+//Prepare sorted collection of hash-count pairs and call draw function
+function setup_analytics(rows) {
+	var hashtags = {},
+		regexp = /#[a-zA-Z0-9_]+/g; 
+	
+	rows.forEach(function(row) {
+		var tweet = row[COLUMN_TWEET_TEXT],
+			match = null;
+		while ((match = regexp.exec(tweet)) != null) {
+			hashtags[match[0]] = (match[0] in hashtags ? hashtags[match[0]]+1 : 1);
+		}
+	});
+	
+	var sorted = [];
+	for (k in hashtags) {
+		sorted.push({hash: k, count: hashtags[k]});
+	}
+	sorted.sort(function(a, b){return b.count-a.count});
+	
+	draw_linear_chart('Top Hashtags', sorted);
+}
+
+//Draw linear chart for hash-count pairs
 function draw_linear_chart(title, data) {
 	$('#analytics_label').html(title);
 	
@@ -39,25 +63,4 @@ function draw_linear_chart(title, data) {
 	    .attr("dy", ".35em")
 	    .text(function(d) { return d.hash; });
 
-}
-
-function setup_analytics(rows) {
-	var hashtags = {},
-		regexp = /#[a-zA-Z0-9_]+/g; 
-	
-	rows.forEach(function(row) {
-		var tweet = row[COLUMN_TWEET_TEXT],
-			match = null;
-		while ((match = regexp.exec(tweet)) != null) {
-			hashtags[match[0]] = (match[0] in hashtags ? hashtags[match[0]]+1 : 1);
-		}
-	});
-	
-	var sorted = [];
-	for (k in hashtags) {
-		sorted.push({hash: k, count: hashtags[k]});
-	}
-	sorted.sort(function(a, b){return b.count-a.count});
-	
-	draw_linear_chart('Top Hashtags', sorted);
 }

@@ -1,4 +1,5 @@
 
+//setup of display of dialog with links to separate single node ("Replay tweets" dialog)
 function setup_playback_dialog(circle_d, rows) {
 	d3.select("#replay_tweets").on("click", function(d) {
 		d3.select("#playback_name")

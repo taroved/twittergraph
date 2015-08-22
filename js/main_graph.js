@@ -1,3 +1,6 @@
+//main file
+
+//entry point
 d3.xhr("may2015.csv", "text/csv", parse_csv);
 
 //Date,Screen Name,Full Name,Followers,Follows,Retweets,Favorites,Tweet Text,"Longitude, Latitude",Street Address,Google Maps,Tweet URL,Profile Image
@@ -7,10 +10,13 @@ var COLUMN_DATE = 0,
 	COLUMN_TWEET_URL = 11,
 	COLUMN_PROFILE_IMAGE = 12
 
+//callback of data loading
 function parse_csv(data) {
     display_graph(d3.csv.parseRows(data.response).slice(0, 1000));
 }
 
+//Create pair of [nodes, links] from raw data. Nodes is with replies and mentions.
+//
 //create_node - create nodes if not exists
 function get_nodes_links_from_rows(rows, create_node) {
     var links = [];
@@ -227,6 +233,7 @@ function display_graph(rows) {
 	setup_analytics(rows);
 }
 
+//Setup display of popup for every node in the main graph
 function setup_popup(circle) {
 	circle.on('mouseover', function(d){
     	d3.select('#popup').style('visibility', 'visible');
@@ -250,6 +257,7 @@ function setup_popup(circle) {
 	});
 } 
 
+//String.format("string {key} string", {key: "value"}) -> "string value string"  
 String.format = function() {
   var s = arguments[0],
       map = arguments[1];
@@ -260,6 +268,7 @@ String.format = function() {
   return s;
 }
 
+//Setup of showing of right dialog with tweets, replies and mentions
 function setup_lists_dialog(circle, links, rows) {
 	circle.on('click', function(d){
 		d3.select("#summary_name")
@@ -310,6 +319,7 @@ function setup_lists_dialog(circle, links, rows) {
 	});
 }
 
+//Fix for images. But it doesn't work and I disabled it so far.
 ////maisonbisson.com/blog/post/12150/detecting-broken-images-in-javascript/
 function iErr(source){
 	//source.src = "/img/noavatar.jpg";

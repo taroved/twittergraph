@@ -73,13 +73,8 @@ function setup_archive(rows) {
 	render_archive_page(rows, 1, 25);
 }
 
-var global_rows = null;
 //Show separate page
 function render_archive_page(rows, page, size) {
-	if (rows)
-		global_rows = rows;
-	else
-		rows = global_rows;
 	show_archive_pagination(rows, page, size);
 	
 	var page_rows = rows.slice(size*(page-1), size*page);
@@ -117,7 +112,6 @@ function render_archive_page(rows, page, size) {
 }
 
 function show_archive_pagination(rows, page, size) {
-	debugger;
 	var page_count = Math.ceil(rows.length / size);
 	if (page==1)
 		d3.select('#archive_pagination ul').select('.previous')

@@ -3,6 +3,9 @@
 //entry point
 d3.xhr("may2015.csv", "text/csv", parse_csv);
 
+//result rows
+var result_rows = null;
+
 //Date,Screen Name,Full Name,Followers,Follows,Retweets,Favorites,Tweet Text,"Longitude, Latitude",Street Address,Google Maps,Tweet URL,Profile Image
 var COLUMN_DATE = 0,
 	COLUMN_SCREEN_NAME = 1,
@@ -19,6 +22,7 @@ function parse_csv(data) {
 //
 //create_node - create nodes if not exists
 function get_nodes_links_from_rows(rows, create_node) {
+	result_rows = rows;
     var links = [];
     var nodes = [];
 
@@ -230,7 +234,6 @@ function display_graph(rows) {
 	
 	setup_popup(circle);
 	setup_lists_dialog(circle, links, rows);
-	setup_analytics(rows);
 	setup_archive(rows);
 }
 
